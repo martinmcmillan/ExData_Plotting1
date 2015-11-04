@@ -1,0 +1,11 @@
+rm(list=ls());
+df<-read.csv("household_power_consumption.txt",sep=";",stringsAsFactors=FALSE,na.strings="?");
+df<-subset(df,(Date=="1/2/2007"|Date=="2/2/2007"));
+df$Date<-format.Date(strptime(df$Date,"%d/%m/%Y"),"%Y-%m-%d");
+days<-format.Date(strptime(df$Date[1],"%Y-%m-%d"),"%a");
+days<-c(days,"Fri","Sat");
+pnts<-c(1,(1+length(df$Date)/2),1+length(df$Date));
+plot(df$Global_active_power,type="l",xlim=c(1,pnts[3]),xlab="",xaxt="n",ylab="Global Active Power (kilowatts)");
+axis(1,at=pnts,labels=days);
+dev.copy(png,filename ="plot2.png",width=480,height=480,units="px");
+dev.off();
